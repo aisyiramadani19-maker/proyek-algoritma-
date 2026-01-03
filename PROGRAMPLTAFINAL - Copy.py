@@ -175,8 +175,8 @@ if st.button("Jalankan Forecast") and bulan_dipilih:
 
     fig, ax = plt.subplots()
     ax.plot(
-        df["Bulan"],
-        df["Daya PLTA (kW)"],
+        df("Bulan"),
+        df("Daya PLTA (kW)"),
         marker="o",
         linestyle="-"
     )
