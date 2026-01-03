@@ -175,13 +175,12 @@ if st.button("Jalankan Forecast") and bulan_dipilih:
 
     rho = 1000
     g = 9.81
-
     data = []
 
     for bulan in bulan_dipilih:
         R = curah_hujan[bulan]
-        T = suhu[bulan]
-        H = kelembaban[bulan] / 100
+        T = suhu(bulan)
+        H = kelembaban(bulan)/ 100
 
         Q_forecast = Q_dasar * (1 + 0.001*R - 0.01*T + 0.002*H)
         P_forecast = rho * g * Q_forecast * head / 1000
