@@ -167,51 +167,55 @@ if st.button("Jalankan Forecast") and bulan_dipilih:
     ax2.grid(axis="y")
 
     st.pyplot(fig2)
+    
+    st.dataframe(df)
+# --------------------------------------------------
+# LINE CHART DAYA PLTA (TIME SERIES)
+# --------------------------------------------------
+st.subheader("Grafik Time Series Daya PLTA")
 
-# ==============================
-# PROSES FORECAST
-# ==============================
-if st.button("Jalankan Forecast") and bulan_dipilih:
+# Ubah urutan bulan agar kronologis
+urutan_bulan = [
+    "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+    "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+]
 
-    rho = 1000
-    g = 9.81
-    data = []
+df["Bulan"] = pd.Categorical(
+    df["Bulan"],
+    categories=urutan_bulan,
+    ordered=True
+)
 
-    for bulan in bulan_dipilih:
-        R = curah_hujan[bulan]
-        T = suhu(bulan)
-        H = kelembaban(bulan)/ 100
+df = df.sort_values("Bulan")
 
-        Q_forecast = Q_dasar * (1 + 0.001*R - 0.01*T + 0.002*H)
-        P_forecast = rho * g * Q_forecast * head / 1000
+fig3, ax3 = plt.subplots()
+ax3.plot(
+    df["Bulan"],
+    df["Daya PLTA (kW)"],
+    marker='o'
+)
 
-        data.append([bulan, Q_forecast, P_forecast])
+ax3.set_xlabel("Bulan")
+ax3.set_ylabel("Daya (kW)")
+ax3.set_title("Tren Forecast Daya PLTA")
+ax3.grid(True)
 
-    df = pd.DataFrame(
-        data,
-        columns=["Bulan", "Debit Forecast (m3/s)", "Daya PLTA (kW)"]
-    )
+st.pyplot(fig3)
 
-    # ==============================
-    # GRAFIK TIME SERIES (LINE)
-    # ==============================
-    st.subheader("Grafik Time Series Daya PLTA")
+st.subheader("Grafik Time Series Debit Sungai")
 
-    fig, ax = plt.subplots()
-    ax.plot(
-        df["Bulan"],
-        df["Daya PLTA (kW)"],
-        marker="o",
-        linestyle="-"
-    )
+fig4, ax4 = plt.subplots()
+ax4.plot(
+    df["Bulan"],
+    df["Debit Forecast (m3/s)"],
+    marker='o'
+)
 
-    ax.set_xlabel("Bulan")
-    ax.set_ylabel("Daya (kW)")
-    ax.set_title("Time Series Daya PLTA")
-    ax.grid()
+ax4.set_xlabel("Bulan")
+ax4.set_ylabel("Debit (m³/s)")
+ax4.set_title("Tren Debit Sungai Hasil Forecast")
+ax4.grid(True)
 
-    st.pyplot(fig)
-
-
+st.pyplot(fig4)
 
 
