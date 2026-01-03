@@ -168,6 +168,31 @@ if st.button("Jalankan Forecast") and bulan_dipilih:
 
     st.pyplot(fig2)
 
+# ==============================
+# PROSES FORECAST
+# ==============================
+if st.button("Jalankan Forecast") and bulan_dipilih:
+
+    rho = 1000
+    g = 9.81
+
+    data = []
+
+    for bulan in bulan_dipilih:
+        R = curah_hujan[bulan]
+        T = suhu[bulan]
+        H = kelembaban[bulan] / 100
+
+        Q_forecast = Q_dasar * (1 + 0.001*R - 0.01*T + 0.002*H)
+        P_forecast = rho * g * Q_forecast * head / 1000
+
+        data.append([bulan, Q_forecast, P_forecast])
+
+    df = pd.DataFrame(
+        data,
+        columns=["Bulan", "Debit Forecast (m3/s)", "Daya PLTA (kW)"]
+    )
+
     # ==============================
     # GRAFIK TIME SERIES (LINE)
     # ==============================
@@ -175,8 +200,8 @@ if st.button("Jalankan Forecast") and bulan_dipilih:
 
     fig, ax = plt.subplots()
     ax.plot(
-        df("Bulan"),
-        df("Daya PLTA (kW)"),
+        df["Bulan"],
+        df["Daya PLTA (kW)"],
         marker="o",
         linestyle="-"
     )
@@ -187,6 +212,7 @@ if st.button("Jalankan Forecast") and bulan_dipilih:
     ax.grid()
 
     st.pyplot(fig)
+
 
 
 
