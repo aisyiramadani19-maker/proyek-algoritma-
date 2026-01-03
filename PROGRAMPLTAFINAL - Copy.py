@@ -167,39 +167,26 @@ if st.button("Jalankan Forecast") and bulan_dipilih:
     ax2.grid(axis="y")
 
     st.pyplot(fig2)
-# --------------------------------------------------
-# LINE CHART TIME SERIES - DAYA PLTA
-# --------------------------------------------------
-st.subheader("Grafik Time Series Daya PLTA")
 
-fig_ts, ax_ts = plt.subplots()
+    # ==============================
+    # GRAFIK TIME SERIES (LINE)
+    # ==============================
+    st.subheader("Grafik Time Series Daya PLTA")
 
-ax_ts.plot(
-    df["Bulan"],
-    df["Daya PLTA (kW)"],
-    marker="o",
-    linestyle="-")
+    fig, ax = plt.subplots()
+    ax.plot(
+        df["Bulan"],
+        df["Daya PLTA (kW)"],
+        marker="o",
+        linestyle="-"
+    )
 
-# Highlight titik maksimum
-idx_max = df["Daya PLTA (kW)"].idxmax()
-ax_ts.scatter(
-    df.loc[idx_max, "Bulan"],
-    df.loc[idx_max, "Daya PLTA (kW)"],
-    s=80
-)
-ax_ts.annotate(
-    f"Max: {df.loc[idx_max, 'Daya PLTA (kW)']:.1f} kW",
-    (df.loc[idx_max, "Bulan"], df.loc[idx_max, "Daya PLTA (kW)"]),
-    textcoords="offset points",
-    xytext=(0,10),
-    ha="center"
-)
+    ax.set_xlabel("Bulan")
+    ax.set_ylabel("Daya (kW)")
+    ax.set_title("Time Series Daya PLTA")
+    ax.grid()
 
-ax_ts.set_xlabel("Bulan")
-ax_ts.set_ylabel("Daya (kW)")
-ax_ts.set_title("Time Series Forecast Daya PLTA")
-ax_ts.grid()
+    st.pyplot(fig)
 
-st.pyplot(fig_ts)
 
 
